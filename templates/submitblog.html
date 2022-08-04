@@ -1,0 +1,22 @@
+
+{% extends 'base.html' %}
+{% block title %}Submit Blog{% endblock title %}
+{% block body %}
+
+<h1>Add your Blog</h1>
+<style>
+h5{
+    color: red;
+} 
+</style>
+
+<form method="POST" action="submitblog">
+    {% csrf_token %}
+    <p>Blog Title:</p>
+    <input type="text" name="title" />
+    <p>Blog Content:</p>
+    <input type="text" name="content" />
+    <input type="submit" />
+
+</form>
+{% endblock body%}

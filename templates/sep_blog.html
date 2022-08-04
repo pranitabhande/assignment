@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %} Blogpost{% endblock title %}
+{% block body %}
+<div class="container my-3">
+  <h2 class="blog-post-title">{{post.title}}</h2>
+  <p class="blog-post-meta">{{post.timeStamp}} by <a href="/about">{{post.author}}</a></p>
+  <p>{{post.content}} </p>
+
+  <form method= "POST" action="/upvote">
+    {% csrf_token %}
+    <input type="hidden" name="postID" value={{post.id}}>
+    <button type="submit" class="btn btn-primary">Upvote:  {{post.upvote}}</button>
+ </form>
+ <form method= "POST" action="/downvote">
+  {% csrf_token %}
+  <input type="hidden" name="postID" value={{post.id}}>
+  <button type="submit" class="btn btn-primary">Downvote:  {{post.downvote}}</button>
+</form>
+
+  <hr>
+</div>
+<div class="container">
+  {% if user.is_authenticated %}
+  <h2> Comments</h2>
+
+  <form action="/postcommentdata" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="exampleInputEmail1">Post Comment </label>
+      <input type="text" class="form-control" name="comment" placeholder="Enter comment here">
+    </div>
+    <input type="hidden" name="postID" value={{post.id}}>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {% else %}
+  <h4>Please Log in to add comments</h4>
+      {% endif %}
+      {% for comment in comment %}
+      <div class="row my-3">
+        <div class="col-md-1  ">
+          <img class="rounded mx-auto d-block w-100 p-2" src="/static/user.jpg" alt="user">
+        </div>
+        <div class="col-md-11 ">
+          <b> {{comment.user.username}} </b> at {{comment.time}}
+          <div> {{comment.data}} </div>
+        </div>
+      </div>
+      {% endfor %}
+
+
+</div>
+{% endblock %}
